@@ -18,18 +18,18 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.My
     String name[];
     String repositoryName[];
     String repositoryDescription[];
-    int branchNumber[];
+    int forkNumber[];
     int starNumber[];
 
     public RepositoryAdapter(Context ct, int userImages[], String user[], String name[],
-                             String repositoryName[], String repositoryDescription[], int branchNumber[], int starNumber[]){
+                             String repositoryName[], String repositoryDescription[], int forkNumber[], int starNumber[]){
         this.context = ct;
         this.userImages = userImages;
         this.user = user;
         this.name = name;
         this.repositoryName = repositoryName;
         this.repositoryDescription = repositoryDescription;
-        this.branchNumber = branchNumber;
+        this.forkNumber = forkNumber;
         this.starNumber = starNumber;
     }
 
@@ -49,7 +49,7 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.My
         holder.repositoryDescription.setText(this.repositoryDescription[position]);
         holder.repositoryUserName.setText(this.user[position]);
         holder.userName.setText(this.name[position]);
-        holder.branchNumber.setText(String.valueOf(this.branchNumber[position]));
+        holder.forkNumber.setText(String.valueOf(this.forkNumber[position]));
         holder.starNumber.setText(String.valueOf(this.starNumber[position]));
         holder.userImage.setImageResource(userImages[position]);
     }
@@ -61,7 +61,7 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.My
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView repositoryName, repositoryDescription, repositoryUserName, userName, branchNumber, starNumber;
+        TextView repositoryName, repositoryDescription, repositoryUserName, userName, forkNumber, starNumber;
         ImageView userImage;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -70,7 +70,7 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.My
             repositoryDescription = itemView.findViewById(R.id.repositoryDescription);
             repositoryUserName = itemView.findViewById(R.id.repositoryUserName);
             userName = itemView.findViewById(R.id.userName);
-            branchNumber = itemView.findViewById(R.id.branchNumber);
+            forkNumber = itemView.findViewById(R.id.forkNumber);
             starNumber = itemView.findViewById(R.id.starNumber);
             userImage = itemView.findViewById(R.id.userImage);
         }

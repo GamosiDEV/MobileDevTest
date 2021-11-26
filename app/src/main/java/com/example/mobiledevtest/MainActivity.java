@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     String name[];
     String repositoryName[];
     String repositoryDescription[];
-    int branchNumber[] = {90,80,70,60,50,40,30,20,10};
+    int forkNumber[] = {90,80,70,60,50,40,30,20,10};
     int starNumber[] = {10,20,30,40,50,60,70,80,90};
 
 
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         repositoryDescription = getResources().getStringArray(R.array.repository_description);
 
         RepositoryAdapter repositoryAdapter = new RepositoryAdapter(this, userImages, user, name,
-                repositoryName,repositoryDescription,branchNumber,starNumber);
+                repositoryName,repositoryDescription,forkNumber,starNumber);
 
         recyclerView.setAdapter(repositoryAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

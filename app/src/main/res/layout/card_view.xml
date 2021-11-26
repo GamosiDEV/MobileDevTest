@@ -87,13 +87,13 @@
                 app:layout_constraintTop_toBottomOf="@id/repositoryInfo">
 
                 <ImageView
-                    android:id="@+id/branchIcon"
+                    android:id="@+id/forkIcon"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginStart="10dp"
                     android:src="@drawable/branch_icon"/>
                 <TextView
-                    android:id="@+id/branchNumber"
+                    android:id="@+id/forkNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"/>
