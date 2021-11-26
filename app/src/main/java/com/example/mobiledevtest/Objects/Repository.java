@@ -15,44 +15,45 @@ public class Repository {
         owner>url>(Link)>name = Nome Completo
      */
 
-    private String repositoryName;
-    private String repositoryDescription;
-    private int forksCount;
-    private int starGazersCount;
+    private String name;
+    private String description;
+    private int forks_count;
+    private int stargazers_count;
     private String userUrl;
+    private User user;
 
-    Map<String, Object> informations = new LinkedHashMap<>();
 
-    public String getRepositoryName() {
-        return repositoryName;
+
+    public String getName() {
+        return name;
     }
 
-    public void setRepositoryName(String repositoryName) {
-        this.repositoryName = repositoryName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getRepositoryDescription() {
-        return repositoryDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setRepositoryDescription(String repositoryDescription) {
-        this.repositoryDescription = repositoryDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public int getForksCount() {
-        return forksCount;
+    public int getForks_count() {
+        return forks_count;
     }
 
-    public void setForksCount(int forksCount) {
-        this.forksCount = forksCount;
+    public void setForks_count(int forks_count) {
+        this.forks_count = forks_count;
     }
 
-    public int getStarGazersCount() {
-        return starGazersCount;
+    public int getStargazers_count() {
+        return stargazers_count;
     }
 
-    public void setStarGazersCount(int starGazersCount) {
-        this.starGazersCount = starGazersCount;
+    public void setStargazers_count(int stargazers_count) {
+        this.stargazers_count = stargazers_count;
     }
 
     public String getUserUrl() {
@@ -63,12 +64,11 @@ public class Repository {
         this.userUrl = userUrl;
     }
 
-    public Map<String, Object> getInformations() {
-        return informations;
+    public User getUser() {
+        return user;
     }
 
-    void setInformations(String key, Object value) {
-        informations.put(key, value);
+    public void setUser(User user) {
+        this.user = user;
     }
-
 }
