@@ -14,7 +14,10 @@ public class User {
     private String avatarUrl;
     private String fullName;
 
-    Map<String, Object> informations = new LinkedHashMap<>();
+    public User(String username, String avatarUrl) {
+        this.username = username;
+        this.avatarUrl = avatarUrl;
+    }
 
     public String getUsername() {
         return username;
@@ -38,13 +41,5 @@ public class User {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
-    }
-
-    public Map<String, Object> getInformations() {
-        return informations;
-    }
-
-    public void setInformations(String key, Object value) {
-        this.informations.put(key, value);
     }
 }

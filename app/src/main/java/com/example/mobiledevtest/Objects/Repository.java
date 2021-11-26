@@ -22,6 +22,12 @@ public class Repository {
     private String userUrl;
     private User user;
 
+    public Repository(String name, String description, int forks_count, int stargazers_count) {
+        this.name = name;
+        this.description = description;
+        this.forks_count = forks_count;
+        this.stargazers_count = stargazers_count;
+    }
 
 
     public String getName() {

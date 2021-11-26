@@ -7,12 +7,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.nfc.Tag;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.widget.ListAdapter;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.mobiledevtest.Objects.Repository;
+import com.example.mobiledevtest.Objects.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
@@ -28,33 +32,23 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    //ActivityMainBinding binding;
-    Handler handler = new Handler();
-    ProgressDialog progressBar ;
-    FetchData fetchData ;
-    ObjectMapper objectMapper;
+    private RecyclerView recyclerView;
 
+    private static String URL="https://api.github.com/search/repositories?q=language:Java&sort=stars&page=1";
 
+    ArrayList<Repository> repositories;
 
+    RepositoryAdapter adapter;
 
-    RecyclerView recyclerView;
-    //testando se a recycler esta funcionando;
-    int userImages[] = {R.drawable.android,R.drawable.android,R.drawable.android,R.drawable.android,
-            R.drawable.android,R.drawable.android,R.drawable.android,R.drawable.android,R.drawable.android};
-    String user[];
-    String name[];
-    String repositoryName[];
-    String repositoryDescription[];
-    int forkNumber[] = {90,80,70,60,50,40,30,20,10};
-    int starNumber[] = {10,20,30,40,50,60,70,80,90};
-
-
+    private ProgressDialog progressDialog;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,119 +57,102 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
 
-        //Populando String para teste
-        user = getResources().getStringArray(R.array.repository_UserName);
-        name = getResources().getStringArray(R.array.repository_Name);
-        repositoryName=getResources().getStringArray(R.array.repository_names);
-        repositoryDescription = getResources().getStringArray(R.array.repository_description);
+        repositories = new ArrayList<>();
 
-        RepositoryAdapter repositoryAdapter = new RepositoryAdapter(this, userImages, user, name,
-                repositoryName,repositoryDescription,forkNumber,starNumber);
-
-        recyclerView.setAdapter(repositoryAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        //binding = ActivityMainBinding.inflate(getLayoutInflater());
-        //setContentView(binding.getRoot());
-
-        fetchData = new FetchData();
-        fetchData.start();
-
-        /*
-        repository = new Repository();
-
-        try {
-            repository = objectMapper.readValue(fetchData.getJsonData(), Repository.class);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
-        Log.d("Gabriel", repository.getName());*/
+        new getRepositories().execute();
 
     }
 
+    private class getRepositories extends AsyncTask<Void,Void,Void>{
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
 
-    class FetchData extends Thread{
+            if (progressDialog.isShowing()){
+                progressDialog.dismiss();
+            }
+            /*
+            if (progressBar.getVisibility() == View.VISIBLE){
+                progressBar.setIndeterminate(false);
+                progressBar.setVisibility(View.GONE);
+            }*/
 
-        private String jsonData = "";
-        List<Repository> repositories = new LinkedList<Repository>();
+            adapter = new RepositoryAdapter(MainActivity.this, repositories);
+            recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+            //Adapter
+        }
 
         @Override
-        public void run() {
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(MainActivity.this);
+            progressDialog.setMessage("Carregando...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+            /*
+            progressBar = new ProgressBar(MainActivity.this);
+            progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+            progressBar.setIndeterminate(true);
+            progressBar.setVisibility(View.VISIBLE);*/
 
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    progressBar = new ProgressDialog(MainActivity.this);
-                    progressBar.setMessage("Wait");
-                    progressBar.setCancelable(false);
-                    progressBar.show();
-                }
-            });
+        }
 
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Handler handler = new Handler();
 
-            try {
-                URL url = new URL("https://api.github.com/search/repositories?q=language:Java&sort=stars&page=1");
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String line;
+            String jsonString = handler.httpServiceCall(URL);
+            if (jsonString != null){
 
-                while ((line = bufferedReader.readLine()) != null){
-                    jsonData = jsonData + line;
-                }
+                try {
+                    JSONObject jsonObject = new JSONObject(jsonString);
+                    JSONArray items = jsonObject.getJSONArray("items");
+                    for (int i=0;i<items.length();i++){
+                        JSONObject obj=items.getJSONObject(i);
+                        Repository repository = new Repository(obj.getString("name"),obj.getString("description")
+                                ,obj.getInt("forks_count"),obj.getInt("stargazers_count"));
 
-                if(!jsonData.isEmpty()){
-                    JSONObject jsonObject = new JSONObject(jsonData);
-
-                    JSONArray itens = jsonObject.getJSONArray("items");
-                    repositories.clear();
-                    for(int i=0; i<itens.length();i++){
-                        JSONObject obj = itens.getJSONObject(i);
-
-                        //criar construtor
-                        Repository repository = new Repository();
-
-                        repository.setName(obj.getString("name"));
-                        repository.setDescription(obj.getString("description"));
-                        repository.setForks_count(obj.getInt("forks_count"));
-                        repository.setStargazers_count(obj.getInt("stargazers_count"));
-
-                        JSONObject owner = obj.getJSONObject("owner");
+                        JSONObject owner = obj.getJSONObject("owner");//here
                         repository.setUserUrl(owner.getString("url"));
 
+                        User user = new User(owner.getString("login"),owner.getString("avatar_url"));
+
+                        String jsonStringFromUser = handler.httpServiceCall(repository.getUserUrl());
+                        if (jsonStringFromUser!=null){
+                            JSONObject personalInfoJSON = new JSONObject(jsonStringFromUser);
+                            user.setFullName(personalInfoJSON.getString("name"));
+                        }
+
+                        repository.setUser(user);
+
                         repositories.add(repository);
-
                     }
+                } catch (JSONException e) {
+                    Toast.makeText(getApplicationContext(), "Json Parsing Error", Toast.LENGTH_SHORT).show();
 
-
-
-
-//                    Log.d("Here", "run: "+line.toString());
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "Json Parsing Error", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
 
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
-
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (progressBar.isShowing()){
-                        progressBar.dismiss();
+            else{
+                Toast.makeText(getApplicationContext(), "Server Error", Toast.LENGTH_SHORT).show();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), "Server Error", Toast.LENGTH_SHORT).show();
                     }
-                }
-            });
-
+                });
+            }
+            return null;
         }
 
-        public String getJsonData() {
-            return jsonData;
-        }
+
     }
 
 }
