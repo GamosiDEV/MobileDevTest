@@ -1,5 +1,6 @@
 package com.example.mobiledevtest;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,6 +11,9 @@ import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListAdapter;
 import android.widget.ProgressBar;
@@ -63,25 +67,35 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private class getRepositories extends AsyncTask<Void,Void,Void>{
-        @Override
-        protected void onPostExecute(Void unused) {
-            super.onPostExecute(unused);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_actionbar,menu);
+        return true;
+    }
 
-            if (progressDialog.isShowing()){
-                progressDialog.dismiss();
-            }
-            /*
-            if (progressBar.getVisibility() == View.VISIBLE){
-                progressBar.setIndeterminate(false);
-                progressBar.setVisibility(View.GONE);
-            }*/
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-            adapter = new RepositoryAdapter(MainActivity.this, repositories);
-            recyclerView.setAdapter(adapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-            //Adapter
+        switch (item.getItemId()){
+            case android.R.id.home:
+                return true;
+            case R.id.search:
+                return true;
+            case R.id.sort_star:
+
+                return true;
+            case R.id.sort_repository_name:
+                return true;
+
         }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    
+
+    private class getRepositories extends AsyncTask<Void,Void,Void>{
 
         @Override
         protected void onPreExecute() {
@@ -90,11 +104,6 @@ public class MainActivity extends AppCompatActivity {
             progressDialog.setMessage("Carregando...");
             progressDialog.setCancelable(false);
             progressDialog.show();
-            /*
-            progressBar = new ProgressBar(MainActivity.this);
-            progressBar = (ProgressBar) findViewById(R.id.progress_bar);
-            progressBar.setIndeterminate(true);
-            progressBar.setVisibility(View.VISIBLE);*/
 
         }
 
@@ -150,6 +159,19 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+
+            if (progressDialog.isShowing()){
+                progressDialog.dismiss();
+            }
+
+            adapter = new RepositoryAdapter(MainActivity.this, repositories);
+            recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         }
 
 

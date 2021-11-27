@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/lupa"
+        android:title="Search"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/sort_star"
+        android:title="Ordenar por Estrelas"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/sort_repository_name"
+        android:title="Ordenar por Nome de Repositório"
+        app:showAsAction="never"/>
+
+</menu>
