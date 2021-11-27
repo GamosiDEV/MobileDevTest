@@ -37,6 +37,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -84,8 +87,21 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.sort_star:
 
+                sortRepositoriesByStar();
+
+                adapter = new RepositoryAdapter(MainActivity.this, repositories);
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+
                 return true;
             case R.id.sort_repository_name:
+
+                sortRepositoriesByName();
+
+                adapter = new RepositoryAdapter(MainActivity.this, repositories);
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+
                 return true;
 
         }
@@ -93,7 +109,45 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    
+    private void sortRepositoriesByStar(){
+        if (repositories.get(0).getStargazers_count() > repositories.get(repositories.size()-1).getStargazers_count()){
+
+            Collections.sort(repositories, new Comparator<Repository>() {
+                @Override
+                public int compare(Repository o1, Repository o2) {
+                    return Integer.valueOf(o1.getStargazers_count()).compareTo(Integer.valueOf(o2.getStargazers_count()));
+                }
+            });
+
+        }else{
+            Collections.sort(repositories, new Comparator<Repository>() {
+                @Override
+                public int compare(Repository o1, Repository o2) {
+                    return Integer.valueOf(o2.getStargazers_count()).compareTo(Integer.valueOf(o1.getStargazers_count()));
+
+                }
+            });
+        }
+    }
+
+    private void sortRepositoriesByName(){
+        if(repositories.get(0).getName().compareToIgnoreCase(repositories.get(repositories.size()-1).getName()) <= 0) {
+            Collections.sort(repositories, new Comparator<Repository>() {
+                @Override
+                public int compare(Repository o1, Repository o2) {
+                    return o2.getName().compareToIgnoreCase(o1.getName());
+
+                }
+            });
+        }else{
+            Collections.sort(repositories, new Comparator<Repository>() {
+                @Override
+                public int compare(Repository o1, Repository o2) {
+                    return o1.getName().compareToIgnoreCase(o2.getName());
+                }
+            });
+        }
+    }
 
     private class getRepositories extends AsyncTask<Void,Void,Void>{
 
