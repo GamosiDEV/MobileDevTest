@@ -43,6 +43,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -84,21 +85,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
 
-                ArrayList<Repository> filteredList = new ArrayList<>();
-
-                for (Repository re : repositories) {
-                    if (re.getName().matches(query+"(.*)") || re.getUser().getUsername().matches(query+"(.*)")){
-                        filteredList.add(re);
-                    }
-                }
-
-                setOnRecyclerViewChanges(filteredList);
-
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+
+                ArrayList<Repository> filteredList = new ArrayList<>();
+
+                for (Repository re : repositories) {
+                    if (re.getName().toLowerCase(Locale.ROOT).contains(newText.toLowerCase(Locale.ROOT)+"")
+                            || re.getUser().getUsername().toLowerCase(Locale.ROOT).contains(newText.toLowerCase(Locale.ROOT)+"")){
+                        filteredList.add(re);
+                    }
+                }
+                setOnRecyclerViewChanges(filteredList);
+
                 return false;
             }
         });
