@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobiledevtest.Objects.Repository;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -44,8 +45,11 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.My
 
         if(repositories.get(position).getUser().getFullName() != null){
             holder.userName.setText(repositories.get(position).getUser().getFullName());
+        }else{
+            holder.userName.setText(" ");
         }
 
+        Picasso.get().load(repositories.get(position).getUser().getAvatarUrl()).into(holder.userImage);
         //holder.userImage.setImageResource(userImages[position]); Tratar para aparecer a imagem
     }
 
