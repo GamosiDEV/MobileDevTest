@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListAdapter;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.mobiledevtest.Objects.Repository;
@@ -74,6 +75,34 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu_actionbar,menu);
+
+        MenuItem menuItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setQueryHint("Digite para pesquisar");
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                ArrayList<Repository> filteredList = new ArrayList<>();
+
+                for (Repository re : repositories) {
+                    if (re.getName().matches(query+"(.*)") || re.getUser().getUsername().matches(query+"(.*)")){
+                        filteredList.add(re);
+                    }
+                }
+
+                setOnRecyclerViewChanges(filteredList);
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
         return true;
     }
 
@@ -83,30 +112,29 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case android.R.id.home:
                 return true;
-            case R.id.search:
-                return true;
             case R.id.sort_star:
 
                 sortRepositoriesByStar();
 
-                adapter = new RepositoryAdapter(MainActivity.this, repositories);
-                recyclerView.setAdapter(adapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+                setOnRecyclerViewChanges(repositories);
 
                 return true;
             case R.id.sort_repository_name:
 
                 sortRepositoriesByName();
-
-                adapter = new RepositoryAdapter(MainActivity.this, repositories);
-                recyclerView.setAdapter(adapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+                setOnRecyclerViewChanges(repositories);
 
                 return true;
 
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setOnRecyclerViewChanges(ArrayList<Repository> list){
+        adapter = new RepositoryAdapter(MainActivity.this, list);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
     }
 
     private void sortRepositoriesByStar(){

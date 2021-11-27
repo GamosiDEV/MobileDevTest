@@ -5,9 +5,10 @@
 
     <item
         android:id="@+id/search"
-        android:icon="@drawable/lupa"
+        android:icon="@drawable/ic_baseline_search_24"
         android:title="Search"
-        app:showAsAction="always"/>
+        app:showAsAction="always"
+        app:actionViewClass="android.widget.SearchView" />
 
     <item
         android:id="@+id/sort_star"
