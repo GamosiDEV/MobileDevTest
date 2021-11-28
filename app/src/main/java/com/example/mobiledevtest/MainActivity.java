@@ -222,11 +222,13 @@ public class MainActivity extends AppCompatActivity {
                         repositories.add(repository);
                     }
                 } catch (JSONException e) {
+
                     Toast.makeText(getApplicationContext(), "Json Parsing Error", Toast.LENGTH_SHORT).show();
 
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+
                             Toast.makeText(getApplicationContext(), "Json Parsing Error", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -234,11 +236,13 @@ public class MainActivity extends AppCompatActivity {
 
             }
             else{
+
                 Toast.makeText(getApplicationContext(), "Server Error", Toast.LENGTH_SHORT).show();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(getApplicationContext(), "Server Error", Toast.LENGTH_SHORT).show();
+                        
                     }
                 });
             }
