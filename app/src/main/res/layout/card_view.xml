@@ -101,7 +101,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginStart="10dp"
-                    android:src="@drawable/branch_icon"/>
+                    android:src="@drawable/branch_ic"/>
                 <TextView
                     android:id="@+id/forkNumber"
                     android:layout_width="wrap_content"
@@ -113,7 +113,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginStart="10dp"
-                    android:src="@drawable/star_icon"/>
+                    android:src="@drawable/star_ic"/>
                 <TextView
                     android:id="@+id/starNumber"
                     android:layout_width="wrap_content"

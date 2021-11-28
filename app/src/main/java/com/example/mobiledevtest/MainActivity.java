@@ -1,5 +1,6 @@
 package com.example.mobiledevtest;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,9 +11,13 @@ import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListAdapter;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.mobiledevtest.Objects.Repository;
@@ -33,8 +38,12 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -63,25 +72,114 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private class getRepositories extends AsyncTask<Void,Void,Void>{
-        @Override
-        protected void onPostExecute(Void unused) {
-            super.onPostExecute(unused);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_actionbar,menu);
 
-            if (progressDialog.isShowing()){
-                progressDialog.dismiss();
+        MenuItem menuItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setQueryHint("Digite para pesquisar");
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                return false;
             }
-            /*
-            if (progressBar.getVisibility() == View.VISIBLE){
-                progressBar.setIndeterminate(false);
-                progressBar.setVisibility(View.GONE);
-            }*/
 
-            adapter = new RepositoryAdapter(MainActivity.this, repositories);
-            recyclerView.setAdapter(adapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-            //Adapter
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                ArrayList<Repository> filteredList = new ArrayList<>();
+
+                for (Repository re : repositories) {
+                    if (re.getName().toLowerCase(Locale.ROOT).contains(newText.toLowerCase(Locale.ROOT)+"")
+                            || re.getUser().getUsername().toLowerCase(Locale.ROOT).contains(newText.toLowerCase(Locale.ROOT)+"")){
+                        filteredList.add(re);
+                    }
+                }
+                setOnRecyclerViewChanges(filteredList);
+
+                return false;
+            }
+        });
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()){
+            case android.R.id.home:
+                return true;
+            case R.id.sort_star:
+
+                sortRepositoriesByStar();
+
+                setOnRecyclerViewChanges(repositories);
+
+                return true;
+            case R.id.sort_repository_name:
+
+                sortRepositoriesByName();
+                setOnRecyclerViewChanges(repositories);
+
+                return true;
+
         }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void setOnRecyclerViewChanges(ArrayList<Repository> list){
+        adapter = new RepositoryAdapter(MainActivity.this, list);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+    }
+
+    private void sortRepositoriesByStar(){
+        if (repositories.get(0).getStargazers_count() > repositories.get(repositories.size()-1).getStargazers_count()){
+
+            Collections.sort(repositories, new Comparator<Repository>() {
+                @Override
+                public int compare(Repository o1, Repository o2) {
+                    return Integer.valueOf(o1.getStargazers_count()).compareTo(Integer.valueOf(o2.getStargazers_count()));
+                }
+            });
+
+        }else{
+            Collections.sort(repositories, new Comparator<Repository>() {
+                @Override
+                public int compare(Repository o1, Repository o2) {
+                    return Integer.valueOf(o2.getStargazers_count()).compareTo(Integer.valueOf(o1.getStargazers_count()));
+
+                }
+            });
+        }
+    }
+
+    private void sortRepositoriesByName(){
+        if(repositories.get(0).getName().compareToIgnoreCase(repositories.get(repositories.size()-1).getName()) <= 0) {
+            Collections.sort(repositories, new Comparator<Repository>() {
+                @Override
+                public int compare(Repository o1, Repository o2) {
+                    return o2.getName().compareToIgnoreCase(o1.getName());
+
+                }
+            });
+        }else{
+            Collections.sort(repositories, new Comparator<Repository>() {
+                @Override
+                public int compare(Repository o1, Repository o2) {
+                    return o1.getName().compareToIgnoreCase(o2.getName());
+                }
+            });
+        }
+    }
+
+    private class getRepositories extends AsyncTask<Void,Void,Void>{
 
         @Override
         protected void onPreExecute() {
@@ -90,11 +188,6 @@ public class MainActivity extends AppCompatActivity {
             progressDialog.setMessage("Carregando...");
             progressDialog.setCancelable(false);
             progressDialog.show();
-            /*
-            progressBar = new ProgressBar(MainActivity.this);
-            progressBar = (ProgressBar) findViewById(R.id.progress_bar);
-            progressBar.setIndeterminate(true);
-            progressBar.setVisibility(View.VISIBLE);*/
 
         }
 
@@ -150,6 +243,19 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+
+            if (progressDialog.isShowing()){
+                progressDialog.dismiss();
+            }
+
+            adapter = new RepositoryAdapter(MainActivity.this, repositories);
+            recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         }
 
 
