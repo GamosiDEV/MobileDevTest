@@ -47,7 +47,7 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.My
             holder.userName.setText(" ");
 
         }else{
-            holder.userName.setText(repositories.get(position).getUser().getFullName());
+            holder.userName.setText("<b>"+repositories.get(position).getUser().getFullName()+"</b>");
         }
 
         Picasso.get().load(repositories.get(position).getUser().getAvatarUrl()).into(holder.userImage);
