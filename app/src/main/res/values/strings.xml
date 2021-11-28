@@ -1,3 +1,52 @@
 <resources>
     <string name="app_name">Mobile Dev Test</string>
+
+    //teste 01
+    <string-array name="repository_names">
+        <item>Repositorio 01</item>
+        <item>Repositorio 02</item>
+        <item>Repositorio 03</item>
+        <item>Repositorio 04</item>
+        <item>Repositorio 05</item>
+        <item>Repositorio 06</item>
+        <item>Repositorio 07</item>
+        <item>Repositorio 08</item>
+        <item>Repositorio 09</item>
+    </string-array>
+    <string-array name="repository_description">
+        <item>Teste Teste Teste Teste Teste Teste Teste Teste Teste Teste Teste Teste Teste Teste Teste Teste Teste Teste Teste </item>
+        <item>Segundo repositorio</item>
+        <item>Terceiro repositorio</item>
+        <item>Quarto repositorio</item>
+        <item>Quinto repositorio</item>
+        <item>Sexto repositorio</item>
+        <item>Setimo repositorio</item>
+        <item>Oitavo repositorio</item>
+        <item>Nono repositorio</item>
+    </string-array>
+
+    <string-array name="repository_UserName">
+        <item>User 01</item>
+        <item>User 02</item>
+        <item>User 03</item>
+        <item>User 04</item>
+        <item>User 05</item>
+        <item>User 06</item>
+        <item>User 07</item>
+        <item>User 08</item>
+        <item>User 09</item>
+    </string-array>
+
+    <string-array name="repository_Name">
+        <item>Nome Completo 01</item>
+        <item>Nome Completo 02</item>
+        <item>Nome Completo 03</item>
+        <item>Nome Completo 04</item>
+        <item>Nome Completo 05</item>
+        <item>Nome Completo 06</item>
+        <item>Nome Completo 07</item>
+        <item>Nome Completo 08</item>
+        <item>Nome Completo 09</item>
+    </string-array>
+
 </resources>
