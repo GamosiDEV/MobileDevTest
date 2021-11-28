@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
 
-    private static String URL="https://api.github.com/search/repositories?q=language:Java&sort=stars&page=1";
+    public static String URL="https://api.github.com/search/repositories?q=language:Java&sort=stars&page=1";
 
     Toolbar toolbar ;
 
