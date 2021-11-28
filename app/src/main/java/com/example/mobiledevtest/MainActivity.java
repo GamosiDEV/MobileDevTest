@@ -2,6 +2,7 @@ package com.example.mobiledevtest;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static String URL="https://api.github.com/search/repositories?q=language:Java&sort=stars&page=1";
 
+    Toolbar toolbar ;
+
     ArrayList<Repository> repositories;
 
     RepositoryAdapter adapter;
@@ -63,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        toolbar = (Toolbar) findViewById(R.id.tollbar);
+        setSupportActionBar(toolbar);
 
         recyclerView = findViewById(R.id.recyclerView);
 
