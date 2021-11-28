@@ -34,7 +34,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="10dp">
 
                 <TextView
                     android:id="@+id/repositoryName"
@@ -46,10 +47,11 @@
 
                 <TextView
                     android:id="@+id/repositoryDescription"
-                    android:layout_width="200dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lines="2"
                     android:ellipsize="end"
+                    android:paddingEnd="10dp"
                     android:layout_marginTop="10dp" />
 
             </LinearLayout>
@@ -74,7 +76,7 @@
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:layout_gravity="center_horizontal"
-                        android:contentDescription="" />
+                        android:background="@color/black"/>
 
                 </androidx.cardview.widget.CardView>
 
@@ -90,10 +92,12 @@
 
                 <TextView
                     android:id="@+id/userName"
-                    android:layout_width="150dp"
+                    android:layout_width="100dp"
                     android:layout_height="20dp"
                     android:layout_marginTop="10dp"
                     android:gravity="center_horizontal"
+                    android:lines="1"
+                    android:ellipsize="end"
                     android:textAlignment="center" />
 
             </LinearLayout>

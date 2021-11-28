@@ -1,6 +1,7 @@
 package com.example.mobiledevtest;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobiledevtest.Objects.Repository;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -48,7 +50,11 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.My
         }else{
             holder.userName.setText(repositories.get(position).getUser().getFullName());
         }
-        Picasso.get().load(repositories.get(position).getUser().getAvatarUrl()).into(holder.userImage);
+        Picasso.get()
+                .load(repositories.get(position).getUser().getAvatarUrl())
+                .fit()
+                .centerCrop()
+                .into(holder.userImage);
     }
 
     @Override
