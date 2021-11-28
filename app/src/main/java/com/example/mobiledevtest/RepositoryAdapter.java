@@ -42,17 +42,13 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.My
         holder.repositoryUserName.setText(repositories.get(position).getUser().getUsername());
         holder.forkNumber.setText(String.valueOf(repositories.get(position).getForks_count()));
         holder.starNumber.setText(String.valueOf(repositories.get(position).getStargazers_count()));
-
         if(repositories.get(position).getUser().getFullName() == null
                 || repositories.get(position).getUser().getFullName() == "null"){
             holder.userName.setText(" ");
-
         }else{
             holder.userName.setText("<b>"+repositories.get(position).getUser().getFullName()+"</b>");
         }
-
         Picasso.get().load(repositories.get(position).getUser().getAvatarUrl()).into(holder.userImage);
-        //holder.userImage.setImageResource(userImages[position]); Tratar para aparecer a imagem
     }
 
     @Override
