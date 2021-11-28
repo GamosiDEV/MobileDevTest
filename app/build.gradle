@@ -13,8 +13,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        minSdkVersion 28
-        targetSdkVersion 28
+        minSdkVersion 22
+        targetSdkVersion 30
     }
 
     buildTypes {

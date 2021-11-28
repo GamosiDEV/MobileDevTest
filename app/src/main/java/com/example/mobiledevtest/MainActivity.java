@@ -2,6 +2,7 @@ package com.example.mobiledevtest;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,7 +51,9 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
 
-    private static String URL="https://api.github.com/search/repositories?q=language:Java&sort=stars&page=1";
+    public static String URL="https://api.github.com/search/repositories?q=language:Java&sort=stars&page=1";
+
+    Toolbar toolbar ;
 
     ArrayList<Repository> repositories;
 
@@ -63,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        toolbar = (Toolbar) findViewById(R.id.tollbar);
+        setSupportActionBar(toolbar);
 
         recyclerView = findViewById(R.id.recyclerView);
 
@@ -222,11 +228,13 @@ public class MainActivity extends AppCompatActivity {
                         repositories.add(repository);
                     }
                 } catch (JSONException e) {
+
                     Toast.makeText(getApplicationContext(), "Json Parsing Error", Toast.LENGTH_SHORT).show();
 
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+
                             Toast.makeText(getApplicationContext(), "Json Parsing Error", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -234,11 +242,13 @@ public class MainActivity extends AppCompatActivity {
 
             }
             else{
+
                 Toast.makeText(getApplicationContext(), "Server Error", Toast.LENGTH_SHORT).show();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(getApplicationContext(), "Server Error", Toast.LENGTH_SHORT).show();
+                        
                     }
                 });
             }
